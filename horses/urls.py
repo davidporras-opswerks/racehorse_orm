@@ -1,0 +1,51 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # class-based views
+    path('', views.IndexView.as_view(), name='index'),
+    path('jockeys/', views.JockeyListView.as_view(), name='jockey_list'),
+    path('racehorses/', views.RacehorseListView.as_view(), name='racehorse_list'),
+    path('races/', views.RaceListView.as_view(), name='race_list'),
+    path('participations/', views.ParticipationListView.as_view(), name='participation_list'),
+    path('jockeys/<int:pk>/', views.JockeyDetailView.as_view(), name='jockey_detail'),
+    path('racehorses/<int:pk>/', views.RacehorseDetailView.as_view(), name='racehorse_detail'),
+    path('races/<int:pk>/', views.RaceDetailView.as_view(), name='race_detail'),
+    path('participations/<int:pk>/', views.ParticipationDetailView.as_view(), name='participation_detail'),
+    path('jockeys/add/', views.JockeyCreateView.as_view(), name='jockey_add'),
+    path('racehorses/add/', views.RacehorseCreateView.as_view(), name='racehorse_add'),
+    path('races/add/', views.RaceCreateView.as_view(), name='race_add'),
+    path('participations/add/', views.ParticipationCreateView.as_view(), name='participation_add'),
+    # path('jockeys/<int:pk>/edit/', views.JockeyUpdateView.as_view(), name='jockey_edit'),
+    # path('racehorses/<int:pk>/edit/', views.RacehorseUpdateView.as_view(), name='racehorse_edit'),
+    # path('races/<int:pk>/edit/', views.RaceUpdateView.as_view(), name='race_edit'),
+    # path('participations/<int:pk>/edit/', views.ParticipationUpdateView.as_view(), name='participation_edit'),
+    # path('jockeys/<int:pk>/delete/', views.JockeyDeleteView.as_view(), name='jockey_delete'),
+    # path('racehorses/<int:pk>/delete/', views.RacehorseDeleteView.as_view(), name='racehorse_delete'),
+    # path('races/<int:pk>/delete/', views.RaceDeleteView.as_view(), name='race_delete'),
+    # path('participations/<int:pk>/delete/', views.ParticipationDeleteView.as_view(), name='participation_delete'),
+]
+
+
+    # path('', views.index, name='index'),
+    # path('jockeys/', views.jockey_list, name='jockey_list'),
+    # path('racehorses/', views.racehorse_list, name='racehorse_list'),
+    # path('races/', views.race_list, name='race_list'),
+    # path('participations/', views.participation_list, name='participation_list'),
+    # path('jockeys/<int:id>/', views.jockey_detail, name='jockey_detail'),
+    # path('racehorses/<int:id>/', views.racehorse_detail, name='racehorse_detail'),
+    # path('races/<int:id>/', views.race_detail, name='race_detail'),
+    # path('participations/<int:id>/', views.participation_detail, name='participation_detail'),
+    # path('jockeys/add/', views.jockey_add, name='jockey_add'),
+    # path('racehorses/add/', views.racehorse_add, name='racehorse_add'),
+    # path('races/add/', views.race_add, name='race_add'),
+    # path('participations/add/', views.participation_add, name='participation_add'),
+    # path('jockeys/<int:id>/edit/', views.jockey_edit, name='jockey_edit'),
+    # path('racehorses/<int:id>/edit/', views.racehorse_edit, name='racehorse_edit'),
+    # path('races/<int:id>/edit/', views.race_edit, name='race_edit'),
+    # path('participations/<int:id>/edit/', views.participation_edit, name='participation_edit'),
+    # path('jockeys/<int:id>/delete/', views.jockey_delete, name='jockey_delete'),
+    # path('racehorses/<int:id>/delete/', views.racehorse_delete, name='racehorse_delete'),
+    # path('races/<int:id>/delete/', views.race_delete, name='race_delete'),
+    # path('participations/<int:id>/delete/', views.participation_delete, name='participation_delete'),
+# ]

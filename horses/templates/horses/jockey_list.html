@@ -1,0 +1,7 @@
+<h1>Jockeys</h1>
+<ul>
+  {% for jockey in jockeys %}
+    <li><a href="{% url 'jockey_detail' jockey.id %}">{{ jockey.name }}</a></li>
+  {% endfor %}
+</ul>
+<a href="{% url 'jockey_add' %}">Add Jockey</a>

@@ -1,0 +1,9 @@
+<h1>{{ jockey.name }}</h1>
+<p><strong>Age:</strong> {{ jockey.age }}</p>
+<a href="{% url 'jockey_list' %}">Back to Jockey List</a>
+<a href="{% url 'jockey_edit' jockey.id %}">Edit Jockey</a>
+<form method="post" action="{% url 'jockey_delete' jockey.id %}">
+  {% csrf_token %}
+  <button type="submit">Delete Jockey</button>
+</form>
+<a href="{% url 'jockey_add' %}">Add New Jockey</a
