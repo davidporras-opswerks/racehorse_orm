@@ -2,6 +2,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 # Create your models here.
+
+# This is the model for the Jockey (name, age)
 class Jockey(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
@@ -9,6 +11,7 @@ class Jockey(models.Model):
     def __str__(self):
         return self.name
 
+# This is the model for the Racehorse (name, age, breed)
 class Racehorse(models.Model):
     name = models.CharField(max_length=100, unique=True)
     age = models.IntegerField()
@@ -17,6 +20,8 @@ class Racehorse(models.Model):
     def __str__(self):
         return self.name
     
+# This is the model for the Race (name, date, location, 
+# track_configuration, track_condition, classification, season, track_length, track_surface)
 class Race(models.Model):
     class TrackSurface(models.TextChoices):
         DIRT = 'D', 'Dirt'
@@ -87,6 +92,7 @@ class Race(models.Model):
         elif self.track_surface == self.TrackSurface.SYNTHETIC and self.track_condition not in self.SYNTHETIC_CONDITIONS:
             raise ValidationError({'track_condition': 'Invalid track condition for synthetic surface.'})
     
+# This is the model for the race entry (racehorse, race, jockey, position, is_winner)
 class Participation(models.Model):
     racehorse = models.ForeignKey(Racehorse, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)

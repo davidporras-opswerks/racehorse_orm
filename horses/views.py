@@ -14,12 +14,14 @@ class IndexView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class JockeyListView(View):
+    # GET: Returns a list of the jockeys in json format
     def get(self, request):
         jockeys = Jockey.objects.all()
         return JsonResponse({"jockeys": [model_to_dict(jockey) for jockey in jockeys]})
 
 @method_decorator(csrf_exempt, name='dispatch')
 class JockeyDetailView(View):
+    # GET: Returns the specific details of a jockey in json format
     def get(self, request, pk):
         try:
             jockey = Jockey.objects.get(pk=pk)
@@ -41,6 +43,7 @@ class JockeyDetailView(View):
             return JsonResponse(jockey_data)
         except Jockey.DoesNotExist:
             raise Http404("Jockey not found")
+    # POST: Updates a jockeys information and returns a copy in json format
     @csrf_exempt
     def post(self, request, pk):
         try:
@@ -54,6 +57,7 @@ class JockeyDetailView(View):
                 return JsonResponse(form.errors, status=400)
         except Jockey.DoesNotExist:
             raise Http404("Jockey not found")
+    # DELETE: Deletes a jockey from database
     @csrf_exempt
     def delete(self, request, pk):
         try:
@@ -65,6 +69,7 @@ class JockeyDetailView(View):
         
 @method_decorator(csrf_exempt, name='dispatch')
 class JockeyCreateView(View):
+    # POST: Adds a new jockey
     @csrf_exempt
     def post(self, request):
         data = json.loads(request.body)
@@ -77,12 +82,14 @@ class JockeyCreateView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RacehorseListView(View):
+    # GET: Returns a list of the racehorses in json format
     def get(self, request):
         racehorses = Racehorse.objects.all()
         return JsonResponse({"racehorses": [model_to_dict(racehorse) for racehorse in racehorses]})
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RacehorseDetailView(View):
+    # GET: Returns the specific details of a racehorse in json format
     def get(self, request, pk):
         try:
             racehorse = Racehorse.objects.get(pk=pk)
@@ -104,6 +111,7 @@ class RacehorseDetailView(View):
             return JsonResponse(racehorse_data)
         except Racehorse.DoesNotExist:
             raise Http404("Racehorse not found")
+    # POST: Updates a racehorse's information and returns a copy in json format
     @csrf_exempt
     def post(self, request, pk):
         try:
@@ -117,6 +125,7 @@ class RacehorseDetailView(View):
                 return JsonResponse(form.errors, status=400)
         except Racehorse.DoesNotExist:
             raise Http404("Racehorse not found")
+    # Deletes a racehorse from database
     @csrf_exempt
     def delete(self, request, pk):
         try:
@@ -128,6 +137,7 @@ class RacehorseDetailView(View):
         
 @method_decorator(csrf_exempt, name='dispatch')
 class RacehorseCreateView(View):
+    # POST: Adds a new racehorse
     @csrf_exempt
     def post(self, request):
         data = json.loads(request.body)
@@ -140,18 +150,36 @@ class RacehorseCreateView(View):
         
 @method_decorator(csrf_exempt, name='dispatch')
 class RaceListView(View):
+    # GET: Returns a list of the races in json format
     def get(self, request):
         races = Race.objects.all()
         return JsonResponse({'races' : [model_to_dict(race) for race in races]})
     
 @method_decorator(csrf_exempt, name='dispatch')
 class RaceDetailView(View):
+    # GET: Returns the specific details of a racehorse in json format
     def get(self, request, pk):
         try:
             race = Race.objects.get(pk=pk)
-            return JsonResponse(model_to_dict(race))
+            race_data = model_to_dict(race)
+            
+            participations = Participation.objects.filter(race=race)
+            participation_data = []
+            for p in participations:
+                participation_data.append({
+                    "id": p.id,
+                    "racehorse_id": p.racehorse.id,
+                    "racehorse_name": p.racehorse.name,
+                    "jockey_id": p.jockey.id,
+                    "jockey_name": p.jockey.name,
+                    "position": p.position,
+                    "is_winner": p.is_winner
+                })
+            race_data['participations'] = participation_data
+            return JsonResponse(race_data)
         except Race.DoesNotExist:
             raise Http404("Race not found")
+    # POST: Updates a race's information and returns a copy in json format
     @csrf_exempt
     def post(self, request, pk):
         try:
@@ -165,6 +193,7 @@ class RaceDetailView(View):
                 return JsonResponse(form.errors, status=400)
         except Race.DoesNotExist:
             raise Http404("Race not found")
+    # DELETE: Deletes a racehorse from database
     @csrf_exempt
     def delete(self, request, pk):
         try:
@@ -176,6 +205,7 @@ class RaceDetailView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RaceCreateView(View):
+    # POST: Adds a new racehorse
     @csrf_exempt
     def post(self, request):
         data = json.loads(request.body)
@@ -188,12 +218,14 @@ class RaceCreateView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ParticipationListView(View):
+    # GET: List of participations
     def get(self, request):
         participations = Participation.objects.all()
         return JsonResponse({"participations": [model_to_dict(participation) for participation in participations]})
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ParticipationDetailView(View):
+    # GET: Detail of a participation
     def get(self, request, pk):
         try:
             participation = Participation.objects.get(pk=pk)
@@ -202,6 +234,7 @@ class ParticipationDetailView(View):
             raise Http404("Participation not found")
     
     @csrf_exempt
+    # POST: Updates participation info
     def post(self, request, pk):
         try:
             participation = Participation.objects.get(pk=pk)
@@ -214,7 +247,7 @@ class ParticipationDetailView(View):
                 return JsonResponse(form.errors, status=400)
         except Participation.DoesNotExist:
             raise Http404("Participation not found")
-    
+    # DELETE: Delete participation
     @csrf_exempt
     def delete(self, request, pk):
         try:
@@ -226,6 +259,7 @@ class ParticipationDetailView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ParticipationCreateView(View):
+    # POST: Add a new participation
     @csrf_exempt
     def post(self, request):
         data = json.loads(request.body)
